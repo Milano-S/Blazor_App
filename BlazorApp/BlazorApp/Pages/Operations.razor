@@ -1,0 +1,61 @@
+﻿@page "/operation"
+@using BlazorApp.Data.Model;
+@inject BlazorApp.Data.IOperationService OperationService;
+
+<h1>Operations</h1>
+<br />
+
+<a href="operation/create">Add Operation</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Order</td>
+            <td>Image Data</td>
+            <td>DeviceId</td>
+            <td>DeviceName</td>
+            <td>DeviceType</td>
+            <td></td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var operation in operationsList)
+        {
+			<tr>
+                
+                <td>@operation.Name</td>
+                <td>@operation.OrderInWhichToPerform</td>
+                <td>@operation.ImageData</td>
+                <td>@operation.Device.DeviceId</td>
+                <td>@operation.Device.Name</td>
+                <td>@operation.Device.Type</td>
+                <td>
+                    <a href="operation/@operation.OperationId">
+                        Edit
+                    </a>
+                </td>
+                 <td>
+                    <button class="btn btn-primary" @onclick = "@(e=> OnDelete(operation.OperationId))">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+
+    private List<Operation> operationsList;
+
+    protected override void OnInitialized()
+    {
+        operationsList = OperationService.GetOperations();
+    }
+
+    private void OnDelete(Guid id){
+        OperationService.DeleteOperation(id);
+    } 
+}
+

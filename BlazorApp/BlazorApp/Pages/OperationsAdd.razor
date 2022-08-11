@@ -1,0 +1,84 @@
+﻿@page "/operation/create"
+@using BlazorApp.Data.Model
+@inject BlazorApp.Data.IOperationService OperationService;
+@inject NavigationManager Navigation
+
+<EditForm Model="operationBlank" OnSubmit="@SubmitForm">
+
+	<div class="form-group">
+		<label>Operation Id</label>
+		<input id="id" class="form-control" name="id" value="@OperationId" readonly />
+	</div>
+
+	<div class="form-group">
+		<label>Operation Name</label>
+		<input id="Name" class="form-control" name="name" @bind-value="operationBlank.Name" />
+	</div>
+
+	<div class="form-group">
+		<label>Operation Order</label>
+		<input id="order" class="form-control" name="order" @bind-value="operationBlank.OrderInWhichToPerform" />
+	</div>
+
+	<div class="form-group">
+		<label>Image Data</label>
+		<input id="ImageData" class="form-control" name="imagedata" @bind-value="operationBlank.ImageData" />
+	</div>
+
+	<div class="form-group">
+		<label>Device Id</label>
+		<input id="device" class="form-control" name="device" @bind-value="operationBlank.Device.DeviceId" />
+	</div>
+
+	<div class="form-group">
+		<label>Device Name</label>
+		<input id="devicename" class="form-control" name="devicename" @bind-value="operationBlank.Device.Name" />
+	</div>
+
+	<div class="form-group">
+		<label>Device Type</label>
+		<input id="devicetype" class="form-control" name="devicetype" @bind-value="operationBlank.Device.Type" />
+	</div>
+
+	<button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public Guid OperationId { get; set; }
+
+	//private Operation operation { get; set; }
+	private Operation operationBlank = new Operation
+	{
+				OperationId = Guid.NewGuid(),
+				Name = "",
+				OrderInWhichToPerform = 0,
+				ImageData = "",
+				Device = new Device
+				{
+					DeviceId = 0,
+					Name = "",
+					Type = DeviceType.Printer
+				}
+	};
+
+
+	protected override void OnInitialized()
+	{
+		//operation = OperationService.GetOperation(Guid.Parse(OperationId));
+		OperationId = Guid.NewGuid();
+	}
+
+	private void SubmitForm()
+	{
+
+		/*if(operation.OperationId == Guid.Empty){
+			OperationService.AddOperation(operation);
+		}else{
+			OperationService.UpdateOperation(operation);
+		}
+		Navigation.NavigateTo("operation");*/
+		OperationService.AddOperation(operationBlank);
+		Navigation.NavigateTo("operation");
+	}
+}

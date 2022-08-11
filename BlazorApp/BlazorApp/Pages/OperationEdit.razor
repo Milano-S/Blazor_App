@@ -1,0 +1,77 @@
+﻿@page "/operation/{OperationId}"
+@using BlazorApp.Data.Model
+@inject BlazorApp.Data.IOperationService OperationService;
+@inject NavigationManager Navigation
+
+<EditForm Model="operation" OnSubmit="@SubmitForm">
+
+	<div class="form-group">
+		<label>Operation Id</label>
+		<input id="id" class="form-control" name="id" value="@OperationId" readonly/>
+	</div>
+
+	<div class="form-group">
+		<label>Operation Name</label>
+		<input id="Name" class="form-control" name="name" @bind-value="operation.Name"/>
+	</div>
+
+	<div class="form-group">
+		<label>Operation Order</label>
+		<input id="order" class="form-control" name="order" @bind-value="operation.OrderInWhichToPerform" />
+	</div>
+
+	<div class="form-group">
+		<label>Image Data</label>
+		<input id="ImageData" class="form-control" name="imagedata" @bind-value="operation.ImageData" />
+	</div>
+
+	<div class="form-group">
+		<label>Device Id</label>
+		<input id="device" class="form-control" name="device" @bind-value="operation.Device.DeviceId"/>
+	</div>
+
+	<div class="form-group">
+		<label>Device Name</label>
+		<input id="devicename" class="form-control" name="devicename" @bind-value="operation.Device.Name" />
+	</div>
+
+	<div class="form-group">
+		<label>Device Type</label>
+		<input id="devicetype" class="form-control" name="devicetype" @bind-value="operation.Device.Type" />
+	</div>
+
+	<button type="submit" class="btn btn-primary">Update</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public string OperationId { get; set; }
+
+	private Operation operation { get; set; }
+
+
+	protected override void OnInitialized()
+	{
+		/*if(string.IsNullOrEmpty(OperationId) & OperationId == "0"){
+			operation = new Data.Model.Operation();
+		}else{
+			operation = OperationService.GetOperation(Guid.Parse(OperationId));
+		}*/
+
+		operation = OperationService.GetOperation(Guid.Parse(OperationId));
+
+
+	}
+
+	private void SubmitForm(){
+
+		/*if(operation.OperationId == Guid.Empty){
+			OperationService.AddOperation(operation);
+		}else{
+			OperationService.UpdateOperation(operation);
+		}
+		Navigation.NavigateTo("operation");*/
+		OperationService.UpdateOperation(operation);
+		Navigation.NavigateTo("operation"); 
+	}
+}
