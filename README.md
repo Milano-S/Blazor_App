@@ -1,2 +1,2 @@
 # Blazor_App
- 🔥A blazor app with full CRUD capbility
+ 🔥A Blazor web app with full CRUD capbility
